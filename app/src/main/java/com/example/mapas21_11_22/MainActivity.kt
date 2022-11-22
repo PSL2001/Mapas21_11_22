@@ -2,6 +2,7 @@ package com.example.mapas21_11_22
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -10,6 +11,8 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.CameraUpdate
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener
+import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.Dash
@@ -20,7 +23,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolygonOptions
 import com.google.android.gms.maps.model.PolylineOptions
 
-class MainActivity : AppCompatActivity(), OnMapReadyCallback {
+class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButtonClickListener, OnMyLocationClickListener {
     lateinit var maps: GoogleMap
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +38,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(p0: GoogleMap) {
         maps = p0
+        maps.setOnMyLocationButtonClickListener(this)
+        maps.setOnMyLocationClickListener(this)
         maps.mapType = GoogleMap.MAP_TYPE_SATELLITE
         val settings = maps.uiSettings
         settings.isZoomControlsEnabled = true
@@ -164,5 +169,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         ) {
             maps.isMyLocationEnabled = false
         }
+    }
+
+    override fun onMyLocationButtonClick(): Boolean {
+        Toast.makeText(this, "Has pulsado la localizacion, serás desintegrado", Toast.LENGTH_LONG).show()
+        //Si devuelves un true, el boton localizar ya no funciona, para que siga con la operativa devolvemos false
+        return false
+    }
+
+    override fun onMyLocationClick(p0: Location) {
+        Toast.makeText(this, "Coordenadas: Latitud: ${p0.latitude}, Longitud: ${p0.longitude}", Toast.LENGTH_LONG).show()
     }
 }
