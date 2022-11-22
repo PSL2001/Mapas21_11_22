@@ -118,4 +118,24 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         maps.addMarker(mIsnti)
 
     }
+
+    /*
+     * Metodo para comprobar que aun tengo los permisos mientras tengo la app corriendo
+     * para evitar crasheos
+     */
+    override fun onResumeFragments() {
+        super.onResumeFragments()
+        if (!::maps.isInitialized) return
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+            || ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            maps.isMyLocationEnabled = false
+        }
+    }
 }
