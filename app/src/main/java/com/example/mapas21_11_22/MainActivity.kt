@@ -12,8 +12,13 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.Dash
+import com.google.android.gms.maps.model.Dot
+import com.google.android.gms.maps.model.Gap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.PolygonOptions
+import com.google.android.gms.maps.model.PolylineOptions
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     lateinit var maps: GoogleMap
@@ -36,6 +41,28 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         createMarker()
         crearAnimacion()
         activarLocalizacion()
+        crearPolyLines()
+    }
+    //---------------------------------------------------------------------------------------------
+    private fun crearPolyLines() {
+        val polyLineOptions = PolylineOptions()
+            .add(LatLng(36.85038934965935, -2.4649787308318207))
+            .add(LatLng(36.85079869957478, -2.4609574938416086))
+            .add(LatLng(36.853271201278304, -2.4459156655664906))
+            .add(LatLng(36.843466575207344, -2.46394011051201))
+            .add(LatLng(36.849047295915035, -2.461772885480761))
+            .add(LatLng(36.852003608355716, -2.4692466955260852))
+            .add(LatLng(36.85038934965935, -2.4649787308318207))
+            .width(15f)
+            .color(ContextCompat.getColor(this, R.color.color1))
+
+        val polyline = maps.addPolyline(polyLineOptions)
+        val patron = listOf(
+            //Dibujo del patron
+            //.  _________   .   ________  .  __________
+            Dot(), Gap(10f), Dash(50f), Gap(10f)
+        )
+        polyline.pattern = patron
     }
 
     //---------------------------------------------------------------------------------------------
